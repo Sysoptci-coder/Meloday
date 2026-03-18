@@ -1126,6 +1126,111 @@
       .cta-final .container { text-align: center; }
     }
 
+    /* ── PLAYLIST SECTION ── */
+    .playlist-section { background: var(--bg-dark); }
+    .playlist-section h2 { text-align: center; margin-bottom: 10px; }
+    .ps-sub { text-align: center; max-width: 480px; margin: 0 auto 44px; }
+    .playlist-list {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .pli {
+      display: grid;
+      grid-template-columns: 40px 48px 1fr auto auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pli:last-child { border-bottom: none; }
+    .pli:hover { background: rgba(255,255,255,0.04); }
+    .pli.playing { background: rgba(232,0,61,0.06); }
+    .pli-num-wrap { display: flex; align-items: center; justify-content: center; }
+    .pli-num { font-size: 13px; color: var(--text-secondary); font-family: var(--font-head); font-weight: 600; }
+    .pli.playing .pli-num { display: none; }
+    .pli-bars { display: none; align-items: flex-end; gap: 2.5px; height: 16px; }
+    .pli.playing .pli-bars { display: flex; }
+    .pli-bar { width: 3px; border-radius: 2px; background: var(--accent); animation: pliBounce 0.9s ease-in-out infinite alternate; }
+    .pli-bar:nth-child(2) { animation-delay: 0.2s; }
+    .pli-bar:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pliBounce { from { height: 3px; } to { height: 14px; } }
+    .pli-cover {
+      width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-weight: 700; font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+    .pli-info { min-width: 0; }
+    .pli-title { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pli.playing .pli-title { color: var(--accent); }
+    .pli-desc { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .pli-badge { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+    .pli-dur { font-size: 13px; color: var(--text-secondary); white-space: nowrap; font-family: var(--font-head); }
+    @media (max-width: 640px) {
+      .pli { grid-template-columns: 32px 40px 1fr auto; gap: 10px; padding: 12px 14px; }
+      .pli-badge { display: none; }
+    }
+
+    /* ── PLAYER MODAL ── */
+    .pm-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(8,3,18,0.96); backdrop-filter: blur(28px);
+      z-index: 1200; align-items: center; justify-content: center;
+    }
+    .pm-overlay.open { display: flex; }
+    .pm-inner {
+      width: 100%; max-width: 400px; padding: 56px 32px 48px;
+      text-align: center; position: relative;
+    }
+    .pm-close {
+      position: absolute; top: 12px; right: 12px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--text-secondary); font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .pm-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .pm-artwork {
+      width: 220px; height: 220px; border-radius: 22px; margin: 0 auto 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-weight: 700; font-size: 56px;
+      color: rgba(255,255,255,0.2);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
+      animation: pmFloat 4s ease-in-out infinite;
+    }
+    @keyframes pmFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .pm-song-title { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .pm-song-cat { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; }
+    .pm-progress { margin-bottom: 32px; }
+    .pm-bar {
+      height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;
+      cursor: pointer; margin-bottom: 10px; position: relative;
+    }
+    .pm-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; pointer-events: none; }
+    .pm-times { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); }
+    .pm-controls { display: flex; align-items: center; justify-content: center; gap: 24px; }
+    .pm-btn {
+      background: none; border: none; color: var(--text-secondary);
+      cursor: pointer; padding: 8px;
+      display: flex; align-items: center; justify-content: center;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .pm-btn:hover { color: #fff; transform: scale(1.1); }
+    .pm-btn.pm-play-btn {
+      width: 64px; height: 64px; background: var(--accent); color: #fff;
+      border-radius: 50%; font-size: 22px;
+      box-shadow: 0 8px 32px var(--accent-glow);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .pm-btn.pm-play-btn:hover { background: var(--accent-hover); transform: scale(1.06); }
+
     /* Scrollbar styling */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
@@ -1216,8 +1321,8 @@
          target="_blank" rel="noopener" class="btn btn-primary">
         Créer ma chanson
       </a>
-      <a href="#exemples" class="btn btn-outline">
-        Écouter des exemples
+      <a href="#playlist" class="btn btn-outline">
+        Playlist
       </a>
     </div>
 
@@ -1313,6 +1418,19 @@
         <p>Votre chanson personnalisée livrée en 24h en qualité studio, prête à être offerte et gardée pour toujours.</p>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PLAYLIST
+============================================================ -->
+<section class="playlist-section" id="playlist">
+  <div class="container">
+    <span class="section-tag text-center reveal" style="display:block">Écouter</span>
+    <h2 class="reveal">Playlist MéloDay</h2>
+    <p class="ps-sub reveal">Cliquez sur un titre pour l'écouter.</p>
+    <div class="playlist-list reveal" id="playlistList"></div>
   </div>
 </section>
 
@@ -1590,6 +1708,32 @@
 <!-- Hidden audio element -->
 <audio id="audioEl" preload="metadata"></audio>
 
+<!-- PLAYER MODAL -->
+<div class="pm-overlay" id="pmOverlay" role="dialog" aria-modal="true">
+  <div class="pm-inner">
+    <button class="pm-close" id="pmClose">✕</button>
+    <div class="pm-artwork" id="pmArtwork"></div>
+    <div class="pm-song-title" id="pmSongTitle"></div>
+    <div class="pm-song-cat" id="pmSongCat"></div>
+    <div class="pm-progress">
+      <div class="pm-bar" id="pmBar"><div class="pm-fill" id="pmFill"></div></div>
+      <div class="pm-times"><span id="pmElapsed">0:00</span><span id="pmDur">0:00</span></div>
+    </div>
+    <div class="pm-controls">
+      <button class="pm-btn" id="pmPrev" aria-label="Précédent">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="pm-btn pm-play-btn" id="pmPlay" aria-label="Lecture / Pause">
+        <svg id="pmIconPlay" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pmIconPause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="pm-btn" id="pmNext" aria-label="Suivant">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
 
 <!-- ============================================================
      LYRICS MODAL
@@ -1626,6 +1770,7 @@
     bapteme: 'Baptême',
     fete: 'Fête',
     declaration: 'Déclaration',
+    instrumental: 'Instrumental',
   };
 
   const songs = [
@@ -1764,6 +1909,16 @@ Et sans toi le monde s'arrête
 (Refrain)`,
     },
     {
+      id: 7,
+      title: 'Dark African Drill',
+      category: 'instrumental',
+      description: 'Instrumental afro drill, sans paroles',
+      audio: 'audio/dark-african-drill.mp3',
+      duration: '3:20',
+      initials: 'DA',
+      lyrics: 'Instrumental — pas de paroles.',
+    },
+    {
       id: 6,
       title: 'Joyeux anniversaire Mamie',
       category: 'anniversaire',
@@ -1792,6 +1947,136 @@ La plus belle de nos vies
 (Refrain)`,
     },
   ];
+
+  /* ==========================================================
+     BUILD PLAYLIST
+  ========================================================== */
+  function buildPlaylist() {
+    const list = document.getElementById('playlistList');
+    if (!list) return;
+    list.innerHTML = '';
+    songs.forEach((song, i) => {
+      const item = document.createElement('div');
+      item.className = 'pli';
+      item.dataset.id = song.id;
+      item.innerHTML = `
+        <div class="pli-num-wrap">
+          <span class="pli-num">${String(i+1).padStart(2,'0')}</span>
+          <div class="pli-bars">
+            <div class="pli-bar" style="height:5px"></div>
+            <div class="pli-bar" style="height:12px"></div>
+            <div class="pli-bar" style="height:7px"></div>
+          </div>
+        </div>
+        <div class="pli-cover" style="background:${COVER_GRADIENTS[i % COVER_GRADIENTS.length]}">${song.initials}</div>
+        <div class="pli-info">
+          <div class="pli-title">${song.title}</div>
+          <div class="pli-desc">${song.description}</div>
+        </div>
+        <span class="pli-badge">${CATEGORY_LABELS[song.category] || song.category}</span>
+        <span class="pli-dur">${song.duration}</span>
+      `;
+      item.addEventListener('click', () => openPlayerModal(song.id));
+      list.appendChild(item);
+    });
+  }
+
+  /* ==========================================================
+     PLAYER MODAL
+  ========================================================== */
+  const pmOverlay   = document.getElementById('pmOverlay');
+  const pmArtwork   = document.getElementById('pmArtwork');
+  const pmSongTitle = document.getElementById('pmSongTitle');
+  const pmSongCat   = document.getElementById('pmSongCat');
+  const pmBar       = document.getElementById('pmBar');
+  const pmFill      = document.getElementById('pmFill');
+  const pmElapsedEl = document.getElementById('pmElapsed');
+  const pmDurEl     = document.getElementById('pmDur');
+  const pmPlay      = document.getElementById('pmPlay');
+  const pmPrevBtn   = document.getElementById('pmPrev');
+  const pmNextBtn   = document.getElementById('pmNext');
+  const pmClose     = document.getElementById('pmClose');
+  const pmIconPlay  = document.getElementById('pmIconPlay');
+  const pmIconPause = document.getElementById('pmIconPause');
+
+  function setModalPlayIcon(playing) {
+    pmIconPlay.style.display  = playing ? 'none'  : 'block';
+    pmIconPause.style.display = playing ? 'block' : 'none';
+  }
+
+  function updatePlaylistHighlight(id) {
+    document.querySelectorAll('.pli').forEach(item => {
+      item.classList.toggle('playing', parseInt(item.dataset.id) === id);
+    });
+  }
+
+  function openPlayerModal(id) {
+    const song = songs.find(s => s.id === id);
+    if (!song) return;
+    const idx = songs.findIndex(s => s.id === id);
+    pmArtwork.style.background = COVER_GRADIENTS[idx % COVER_GRADIENTS.length];
+    pmArtwork.textContent = song.initials;
+    pmSongTitle.textContent = song.title;
+    pmSongCat.textContent = CATEGORY_LABELS[song.category] || song.category;
+    pmFill.style.width = '0%';
+    pmElapsedEl.textContent = '0:00';
+    pmDurEl.textContent = song.duration;
+    pmOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    playSong(id);
+    setModalPlayIcon(true);
+    updatePlaylistHighlight(id);
+  }
+
+  function closePlayerModal() {
+    pmOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  pmClose.addEventListener('click', closePlayerModal);
+  pmOverlay.addEventListener('click', e => { if (e.target === pmOverlay) closePlayerModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && pmOverlay.classList.contains('open')) closePlayerModal(); });
+
+  pmPlay.addEventListener('click', () => {
+    if (!audio.paused) {
+      audio.pause(); isPlaying = false; setModalPlayIcon(false);
+      btnPlay.innerHTML = '&#9654;';
+    } else {
+      audio.play().catch(() => {}); isPlaying = true; setModalPlayIcon(true);
+      btnPlay.innerHTML = '&#9646;&#9646;';
+    }
+  });
+
+  pmPrevBtn.addEventListener('click', () => {
+    const idx = songs.findIndex(s => s.id === currentId);
+    const prevSong = songs[(idx - 1 + songs.length) % songs.length];
+    openPlayerModal(prevSong.id);
+  });
+
+  pmNextBtn.addEventListener('click', () => {
+    const idx = songs.findIndex(s => s.id === currentId);
+    const nextSong = songs[(idx + 1) % songs.length];
+    openPlayerModal(nextSong.id);
+  });
+
+  pmBar.addEventListener('click', e => {
+    const pct = (e.clientX - pmBar.getBoundingClientRect().left) / pmBar.offsetWidth;
+    if (audio.duration) { audio.currentTime = pct * audio.duration; }
+    else {
+      const parts = (songs.find(s => s.id === currentId)?.duration || '0:00').split(':');
+      simProgress = Math.floor(pct * (parseInt(parts[0]) * 60 + parseInt(parts[1])));
+    }
+  });
+
+  // Sync modal progress with real audio
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      pmFill.style.width = pct + '%';
+      pmElapsedEl.textContent = formatTime(audio.currentTime);
+      pmDurEl.textContent = formatTime(audio.duration);
+    }
+  });
 
   /* ==========================================================
      BUILD SONG CARDS
@@ -1968,7 +2253,9 @@ La plus belle de nos vies
       }
       const pct = (simProgress / totalSec) * 100;
       progressFill.style.width = pct + '%';
+      pmFill.style.width = pct + '%';
       timeElapsed.textContent = formatTime(simProgress);
+      pmElapsedEl.textContent = formatTime(simProgress);
 
       // Update mini bar on card
       const activeCard = document.querySelector(`.song-card[data-id="${currentId}"]`);
@@ -2150,6 +2437,7 @@ La plus belle de nos vies
      INIT
   ========================================================== */
   buildCards();
+  buildPlaylist();
   observeReveal();
 
 </script>
