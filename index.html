@@ -5,33 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MéloDay — La chanson de ton moment</title>
   <meta name="description" content="Offrez une chanson 100% personnalisée pour anniversaires, mariages, baptêmes et déclarations d'amour. Paroles sur-mesure, mélodie originale, qualité studio." />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
 
   <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — THEME MÉLODAY / DITTO STYLE
+    ============================================================ */
     :root {
       --bg-main:       #42145F;
       --bg-dark:       #1a0a2e;
-      --bg-card:       rgba(255,255,255,0.04);
+      --bg-card:       rgba(255,255,255,0.05);
       --accent:        #E8003D;
-      --accent-glow:   rgba(232,0,61,0.35);
-      --accent-hover:  #c8002f;
+      --accent-glow:   rgba(232,0,61,0.4);
+      --accent-hover:  #ff1a52;
       --text-primary:  #FFFFFF;
       --text-secondary:#B8A8C8;
-      --border:        rgba(255,255,255,0.08);
-      --border-hover:  rgba(255,255,255,0.2);
-      --radius:        14px;
+      --border:        rgba(255,255,255,0.1);
+      --border-active: rgba(255,255,255,0.25);
+      --radius:        12px;
       --radius-pill:   999px;
       --font-head:     'Poppins', sans-serif;
       --font-body:     'Satoshi', 'Poppins', sans-serif;
-      --ease:          cubic-bezier(0.4, 0, 0.2, 1);
-      --player-h:      84px;
+      --transition:    0.3s ease;
+      --player-height: 88px;
     }
 
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     html { scroll-behavior: smooth; }
+
     body {
       font-family: var(--font-body);
       background: var(--bg-main);
@@ -39,449 +49,1152 @@
       line-height: 1.7;
       font-size: 16px;
       overflow-x: hidden;
-      padding-bottom: var(--player-h);
+      padding-bottom: var(--player-height);
     }
+
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
-    h1,h2,h3,h4 { font-family: var(--font-head); line-height: 1.15; }
-    h1 { font-size: clamp(38px, 5.5vw, 60px); font-weight: 700; letter-spacing: -0.02em; }
-    h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -0.015em; }
-    h3 { font-size: clamp(17px, 2vw, 20px); font-weight: 600; }
-    p  { color: var(--text-secondary); font-size: 16px; line-height: 1.75; }
-    section { padding: 90px 0; }
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-    svg { display: block; flex-shrink: 0; }
 
-    /* ── BUTTONS ── */
+    h1, h2, h3, h4 { font-family: var(--font-head); line-height: 1.2; }
+
+    h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 700; }
+    h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; }
+    h3 { font-size: clamp(18px, 2.5vw, 22px); font-weight: 600; }
+
+    p { color: var(--text-secondary); font-size: 16px; line-height: 1.7; }
+    @media (max-width: 480px) { p { font-size: 14px; } }
+
+    section { padding: 80px 0; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
     .btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 28px; border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: 15px; font-weight: 600;
-      cursor: pointer; border: none; letter-spacing: 0.01em;
-      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s;
-      will-change: transform; white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+      will-change: transform;
+      white-space: nowrap;
     }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--accent-glow); background: var(--accent-hover); }
-    .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
-    .btn-outline:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.7); box-shadow: 0 8px 24px rgba(255,255,255,0.06); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+      background: var(--accent-hover);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+    .btn-outline:hover {
+      transform: translateY(-3px);
+      border-color: #fff;
+      box-shadow: 0 8px 24px rgba(255,255,255,0.1);
+    }
+    .btn-icon { font-size: 18px; }
 
-    /* ── NAVBAR ── */
+    /* ============================================================
+       SCROLL REVEAL — always visible, subtle fade-in on load
+    ============================================================ */
+    .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal.animate {
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
     .navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(20, 8, 36, 0.9); backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border); height: 68px;
-      display: flex; align-items: center;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(26,10,46,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 70px;
+      display: flex;
+      align-items: center;
     }
-    .navbar .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-    .nav-logo { font-family: var(--font-head); font-size: 21px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
-    .nav-logo em { color: var(--accent); font-style: normal; }
-    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
-    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
     .nav-links a:hover { color: #fff; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 1.5px; background: #fff; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
-    .nav-mobile { display: none; position: fixed; top: 68px; left: 0; right: 0; background: var(--bg-dark); border-bottom: 1px solid var(--border); padding: 20px 28px 28px; z-index: 999; }
-    .nav-mobile.open { display: block; }
-    .nav-mobile a { display: block; padding: 13px 0; color: var(--text-secondary); font-size: 15px; border-bottom: 1px solid var(--border); transition: color 0.2s; }
-    .nav-mobile a:hover { color: #fff; }
-    .nav-mobile .btn { margin-top: 18px; width: 100%; justify-content: center; }
-    @media (max-width: 768px) { .nav-links, .nav-cta { display: none; } .hamburger { display: flex; } }
+    .nav-cta { margin-left: 8px; }
 
-    /* ── HERO ── */
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* Mobile nav */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 28px;
+      z-index: 999;
+    }
+    .nav-mobile.open { display: block; }
+    .nav-mobile a {
+      display: block;
+      padding: 12px 0;
+      color: var(--text-secondary);
+      font-size: 16px;
+      border-bottom: 1px solid var(--border);
+      transition: color var(--transition);
+    }
+    .nav-mobile a:hover { color: #fff; }
+    .nav-mobile .btn { margin-top: 16px; width: 100%; justify-content: center; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
     .hero {
-      min-height: 100vh; display: flex; align-items: center;
-      padding-top: 100px; background: var(--bg-main); position: relative; overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      background: var(--bg-main);
+      position: relative;
+      overflow: hidden;
     }
     .hero::before {
-      content: ''; position: absolute; top: -20%; right: -10%;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(232,0,61,0.09) 0%, transparent 65%);
-      border-radius: 50%; pointer-events: none;
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(232,0,61,0.12) 0%, transparent 70%);
+      border-radius: 50%;
     }
     .hero::after {
-      content: ''; position: absolute; bottom: -25%; left: -8%;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(100,20,150,0.25) 0%, transparent 65%);
-      border-radius: 50%; pointer-events: none;
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(66,20,95,0.4) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    /* Grain texture */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
     }
     .hero .container { position: relative; z-index: 1; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--accent);
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,0,61,0.15);
+      border: 1px solid rgba(232,0,61,0.3);
+      color: #ff6b8a;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      margin-bottom: 20px;
+      max-width: 680px;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-sub {
+      max-width: 560px;
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+    @media (max-width: 480px) { .hero-sub { font-size: 15px; } }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px;
+      margin-top: 60px;
+    }
+    .hero-stat-num {
+      display: block;
+      font-family: var(--font-head);
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       INTRO SERVICE
+    ============================================================ */
+    .intro {
+      background: var(--bg-dark);
+      text-align: center;
+    }
+    .intro h2 { margin-bottom: 16px; }
+    .intro > .container > p { max-width: 600px; margin: 0 auto 48px; }
+    .intro-points {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+    .intro-point {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+    }
+    .intro-point .icon {
+      font-size: 22px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(232,0,61,0.12);
+      border: 1px solid rgba(232,0,61,0.25);
+      border-radius: 10px;
+    }
+
+    /* ============================================================
+       STEPS
+    ============================================================ */
+    .steps { background: var(--bg-main); }
+    .steps h2 { text-align: center; margin-bottom: 12px; }
+    .steps-sub { text-align: center; max-width: 500px; margin: 0 auto 64px; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    /* Connector line */
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(16.66% + 20px);
+      right: calc(16.66% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), rgba(232,0,61,0.3));
+      z-index: 0;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 32px 24px;
+      position: relative;
+      z-index: 1;
+      transition: transform var(--transition);
+    }
+    .step-card:hover { transform: translateY(-4px); }
+
+    .step-num-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 24px;
     }
-    .hero-eyebrow::before {
-      content: ''; display: block; width: 24px; height: 1.5px;
-      background: var(--accent); border-radius: 2px;
+    .step-num-bg {
+      font-family: var(--font-head);
+      font-size: 120px;
+      font-weight: 700;
+      color: rgba(232,0,61,0.06);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      line-height: 1;
+      user-select: none;
     }
-    .hero-title { max-width: 700px; margin-bottom: 22px; color: #fff; }
-    .hero-title em { color: var(--accent); font-style: normal; }
-    .hero-sub { max-width: 540px; margin-bottom: 40px; font-size: 17px; }
-    .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 64px; }
-    .hero-divider { width: 48px; height: 1.5px; background: rgba(255,255,255,0.12); margin-bottom: 36px; }
-    .hero-stats { display: flex; flex-wrap: wrap; gap: 48px; }
-    .hero-stat-num { display: block; font-family: var(--font-head); font-size: 30px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-    .hero-stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
-
-    /* ── INTRO ── */
-    .intro { background: var(--bg-dark); }
-    .intro-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .intro-left h2 { margin-bottom: 18px; }
-    .intro-left p { margin-bottom: 36px; }
-    .intro-points { display: flex; flex-direction: column; gap: 18px; }
-    .intro-point { display: flex; align-items: flex-start; gap: 14px; }
-    .intro-point-icon {
-      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-      background: rgba(232,0,61,0.1); border: 1px solid rgba(232,0,61,0.2);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .intro-point-text strong { display: block; font-weight: 600; color: #fff; font-size: 15px; margin-bottom: 2px; }
-    .intro-point-text span { font-size: 14px; color: var(--text-secondary); }
-    .intro-right {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 20px; padding: 36px; display: flex; flex-direction: column; gap: 20px;
-    }
-    .intro-stat-row { display: flex; align-items: center; gap: 16px; padding: 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; }
-    .intro-stat-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), #7b2ff7); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .intro-stat-num { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: #fff; }
-    .intro-stat-label { font-size: 13px; color: var(--text-secondary); }
-    @media (max-width: 900px) { .intro-inner { grid-template-columns: 1fr; gap: 40px; } }
-
-    /* ── STEPS ── */
-    .steps { background: var(--bg-main); }
-    .steps-header { text-align: center; max-width: 560px; margin: 0 auto 72px; }
-    .steps-header h2 { margin-bottom: 14px; }
-    .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; position: relative; }
-    .steps-grid::before {
-      content: ''; position: absolute; top: 28px;
-      left: calc(16.67% + 12px); right: calc(16.67% + 12px);
-      height: 1px; background: linear-gradient(90deg, var(--accent) 0%, rgba(232,0,61,0.15) 100%);
-    }
-    .step-card { padding: 0 28px 0; text-align: center; position: relative; z-index: 1; }
     .step-num {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--bg-dark); border: 1.5px solid var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-head); font-size: 18px; font-weight: 700;
-      color: var(--accent); margin: 0 auto 28px;
+      width: 64px;
+      height: 64px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 0 8px rgba(232,0,61,0.12);
     }
-    .step-card h3 { color: #fff; margin-bottom: 10px; }
+    .step-card h3 { margin-bottom: 12px; }
+
     @media (max-width: 768px) {
-      .steps-grid { grid-template-columns: 1fr; gap: 1px; }
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
       .steps-grid::before { display: none; }
-      .step-card { padding: 28px; border-bottom: 1px solid var(--border); text-align: left; display: flex; gap: 20px; align-items: flex-start; }
-      .step-num { margin: 0; flex-shrink: 0; }
-      .step-card > div { text-align: left; }
+      .step-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      }
     }
 
-    /* ── GALLERY ── */
+    /* ============================================================
+       GALLERY / AUDIO EXAMPLES
+    ============================================================ */
     .gallery { background: var(--bg-dark); }
-    .gallery-header { text-align: center; max-width: 540px; margin: 0 auto 44px; }
-    .gallery-header h2 { margin-bottom: 12px; }
-    .filter-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 52px; }
-    .pill {
-      padding: 8px 18px; border-radius: var(--radius-pill);
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text-secondary); font-size: 13px; font-weight: 500;
-      cursor: pointer; transition: all 0.22s; font-family: var(--font-body);
+    .gallery h2 { text-align: center; margin-bottom: 12px; }
+    .gallery-sub { text-align: center; max-width: 500px; margin: 0 auto 40px; }
+
+    /* Filter Pills */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 48px;
     }
-    .pill:hover { border-color: var(--border-hover); color: #fff; }
-    .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .songs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-    @media (max-width: 1024px) { .songs-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 580px)  { .songs-grid { grid-template-columns: 1fr; } }
+    .pill {
+      padding: 8px 20px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      will-change: transform;
+    }
+    .pill:hover, .pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    /* Song Grid */
+    .songs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 1024px) { .songs-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px)  { .songs-grid { grid-template-columns: 1fr; } }
 
     .song-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden; cursor: pointer;
-      transition: transform 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s;
-    }
-    .song-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 16px 48px rgba(0,0,0,0.35); }
-    .song-card.hidden { display: none; }
-    .song-cover { width: 100%; aspect-ratio: 3/2; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .song-cover-bg { position: absolute; inset: 0; }
-    .song-initials { font-family: var(--font-head); font-size: 40px; font-weight: 700; color: rgba(255,255,255,0.15); position: relative; z-index: 1; letter-spacing: -0.02em; }
-    .song-badge {
-      position: absolute; top: 12px; left: 12px; z-index: 2;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-      color: rgba(255,255,255,0.9); font-size: 10px; font-weight: 600;
-      padding: 4px 10px; border-radius: var(--radius-pill);
-      text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid rgba(255,255,255,0.1);
-    }
-    .song-play-btn {
-      position: absolute; z-index: 2;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,0.12); backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255,255,255,0.25);
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s, border-color 0.2s;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      will-change: transform;
       cursor: pointer;
     }
-    .song-card:hover .song-play-btn { background: var(--accent); border-color: var(--accent); transform: scale(1.08); }
-    .song-progress-mini { display: none; height: 2px; background: rgba(255,255,255,0.06); }
-    .song-card.playing .song-progress-mini { display: block; }
-    .song-progress-mini-fill { height: 100%; background: var(--accent); width: 0%; }
+    .song-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-active);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .song-card.hidden { display: none; }
+
+    .song-cover {
+      width: 100%;
+      aspect-ratio: 16/9;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .song-cover-inner {
+      position: absolute;
+      inset: 0;
+    }
+    .song-initials {
+      font-family: var(--font-head);
+      font-size: 48px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.2);
+      position: relative;
+      z-index: 1;
+      user-select: none;
+    }
+    .song-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      z-index: 2;
+    }
+    .song-play-btn {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      z-index: 2;
+      border: 2px solid rgba(255,255,255,0.2);
+      transition: background var(--transition), transform var(--transition);
+    }
+    .song-card:hover .song-play-btn {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.08);
+    }
+
     .song-info { padding: 18px 20px 20px; }
-    .song-title { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 5px; }
-    .song-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5; }
-    .song-meta { display: flex; align-items: center; justify-content: space-between; }
-    .song-duration { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 5px; }
+    .song-title {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .song-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+    .song-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .song-duration {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
     .song-lyrics-btn {
-      font-size: 12px; font-weight: 500; color: var(--accent);
-      background: transparent; border: 1px solid rgba(232,0,61,0.25);
-      padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer;
-      transition: all 0.2s; font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(232,0,61,0.1);
+      border: 1px solid rgba(232,0,61,0.2);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all var(--transition);
     }
-    .song-lyrics-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .song-lyrics-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
 
-    /* ── STYLES MUSICAUX ── */
-    .musical-styles { background: var(--bg-main); }
-    .styles-header { max-width: 540px; margin-bottom: 44px; }
-    .styles-header h2 { margin-bottom: 12px; }
-    .style-pills { display: flex; flex-wrap: wrap; gap: 10px; }
-    .style-pill {
-      padding: 10px 20px; border-radius: var(--radius-pill);
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text-secondary); font-size: 14px; font-weight: 500;
-      transition: all 0.22s; cursor: default;
+    /* Song progress mini-bar (shown when active) */
+    .song-progress-mini {
+      display: none;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      position: relative;
     }
-    .style-pill:hover { border-color: var(--border-hover); color: #fff; transform: translateY(-2px); }
-    .style-pill.featured { border-color: rgba(232,0,61,0.35); color: rgba(255,180,200,0.9); }
-    .style-pill.featured:hover { background: rgba(232,0,61,0.08); box-shadow: 0 4px 16px var(--accent-glow); }
+    .song-card.playing .song-progress-mini { display: block; }
+    .song-progress-mini-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 1s linear;
+    }
 
-    /* ── TESTIMONIALS ── */
-    .testimonials { background: var(--bg-dark); }
-    .testimonials-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; flex-wrap: wrap; gap: 20px; }
-    .testimonials-header h2 { max-width: 440px; }
-    .rating-pill { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); padding: 10px 18px; border-radius: var(--radius-pill); }
-    .rating-stars { color: #F5C518; font-size: 13px; letter-spacing: 1px; }
-    .rating-label { font-size: 13px; color: var(--text-secondary); }
-    .rating-label strong { color: #fff; }
-    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-    @media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } .testimonials-header { flex-direction: column; align-items: flex-start; } }
-    .testi-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px;
-      transition: transform 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s;
-    }
-    .testi-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
-    .testi-stars { color: #F5C518; font-size: 13px; letter-spacing: 1px; margin-bottom: 16px; }
-    .testi-text { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 22px; }
-    .testi-author { display: flex; align-items: center; gap: 12px; }
-    .testi-avatar {
-      width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), #6b21a8);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-head); font-weight: 700; font-size: 13px;
-    }
-    .testi-name { font-weight: 600; font-size: 14px; color: #fff; }
-    .testi-occasion { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-
-    /* ── GUARANTEES ── */
-    .guarantees { background: var(--bg-main); }
-    .guarantees-header { text-align: center; max-width: 500px; margin: 0 auto 56px; }
-    .guarantees-header h2 { margin-bottom: 12px; }
-    .guarantees-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-    @media (max-width: 768px) { .guarantees-grid { grid-template-columns: 1fr; } }
-    .guarantee-card {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 28px;
-      transition: transform 0.25s var(--ease), border-color 0.25s;
-    }
-    .guarantee-card:hover { transform: translateY(-3px); border-color: var(--border-hover); }
-    .guarantee-icon-wrap {
-      width: 48px; height: 48px; border-radius: 12px; margin-bottom: 20px;
-      background: rgba(232,0,61,0.08); border: 1px solid rgba(232,0,61,0.15);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .guarantee-card h3 { color: #fff; margin-bottom: 8px; font-size: 17px; }
-
-    /* ── FAQ ── */
-    .faq { background: var(--bg-dark); }
-    .faq-header { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-    .faq-header-left h2 { margin-bottom: 14px; }
-    .faq-header-left p { margin-bottom: 32px; }
-    .faq-list { display: flex; flex-direction: column; }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-item:first-child { border-top: 1px solid var(--border); }
-    .faq-q {
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 16px; padding: 20px 0; cursor: pointer; user-select: none;
-    }
-    .faq-q-text { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: #fff; }
-    .faq-toggle {
-      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, border-color 0.2s, transform 0.3s;
-    }
-    .faq-item.open .faq-toggle { background: var(--accent); border-color: var(--accent); transform: rotate(45deg); }
-    .faq-item.open .faq-q-text { color: var(--accent); }
-    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s var(--ease); }
-    .faq-a-inner { padding: 0 0 20px; font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
-    .faq-item.open .faq-a { max-height: 220px; }
-    @media (max-width: 900px) { .faq-header { grid-template-columns: 1fr; gap: 0; } .faq-header-left { margin-bottom: 36px; } }
-
-    /* ── CTA FINAL ── */
-    .cta-final { background: var(--bg-main); overflow: hidden; }
-    .cta-final-inner {
-      background: var(--bg-dark); border: 1px solid var(--border);
-      border-radius: 24px; padding: 72px 48px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .cta-final-inner::before {
-      content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 400px;
-      background: radial-gradient(ellipse, rgba(232,0,61,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .cta-final-inner h2 { margin-bottom: 16px; position: relative; }
-    .cta-final-inner p { max-width: 480px; margin: 0 auto 40px; font-size: 17px; position: relative; }
-    .cta-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; position: relative; }
-    @media (max-width: 600px) { .cta-final-inner { padding: 48px 24px; } }
-
-    /* ── FOOTER ── */
-    footer { background: #0b0418; border-top: 1px solid var(--border); padding: 48px 0; }
-    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-    .footer-brand { }
-    .footer-logo { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-    .footer-logo em { color: var(--accent); font-style: normal; }
-    .footer-slogan { font-size: 13px; color: var(--text-secondary); }
-    .footer-links { display: flex; flex-wrap: wrap; gap: 28px; }
-    .footer-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color 0.2s; }
-    .footer-links a:hover { color: #fff; }
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); width: 100%; text-align: center; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 8px; }
-    @media (max-width: 640px) { .footer-inner { flex-direction: column; align-items: flex-start; } }
-
-    /* ── PLAYER ── */
+    /* ============================================================
+       STICKY PLAYER
+    ============================================================ */
     .player {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      height: var(--player-h); background: rgba(14, 5, 28, 0.97);
-      backdrop-filter: blur(24px); border-top: 1px solid rgba(232,0,61,0.5);
-      z-index: 900; display: flex; align-items: center;
-      padding: 0 24px; gap: 20px;
-      transform: translateY(100%); transition: transform 0.4s var(--ease);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--player-height);
+      background: rgba(20, 6, 36, 0.97);
+      backdrop-filter: blur(20px);
+      border-top: 2px solid var(--accent);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 20px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .player.visible { transform: translateY(0); }
+
     .player-cover {
-      width: 52px; height: 52px; border-radius: 8px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-head); font-weight: 700; font-size: 18px;
-      color: rgba(255,255,255,0.3);
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: var(--font-head);
+      color: rgba(255,255,255,0.4);
     }
-    .player-info { min-width: 0; max-width: 190px; flex-shrink: 0; }
-    .player-title { font-family: var(--font-head); font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .player-cat { font-size: 11px; color: var(--accent); margin-top: 2px; }
-    .player-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .player-info {
+      flex-shrink: 0;
+      min-width: 0;
+      max-width: 180px;
+    }
+    .player-title {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .player-cat {
+      font-size: 12px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
     .player-btn {
-      background: none; border: none; color: var(--text-secondary);
-      cursor: pointer; padding: 6px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: color 0.2s, background 0.2s;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      transition: color var(--transition), transform var(--transition);
     }
-    .player-btn:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .player-btn:hover { color: #fff; transform: scale(1.1); }
     .player-btn.play-main {
-      width: 40px; height: 40px; background: var(--accent); color: #fff; border-radius: 50%;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
     }
-    .player-btn.play-main:hover { background: var(--accent-hover); transform: scale(1.06); box-shadow: 0 0 18px var(--accent-glow); }
-    .player-progress-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-    .player-progress { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; cursor: pointer; }
-    .player-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; pointer-events: none; }
-    .player-times { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); }
-    .player-volume { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .player-vol-input { width: 72px; -webkit-appearance: none; height: 3px; background: rgba(255,255,255,0.12); border-radius: 2px; outline: none; cursor: pointer; }
-    .player-vol-input::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #fff; border-radius: 50%; }
-    .player-lyrics-btn {
-      background: transparent; border: 1px solid rgba(232,0,61,0.3);
-      color: var(--accent); font-size: 12px; font-weight: 500; padding: 5px 12px;
-      border-radius: var(--radius-pill); cursor: pointer; flex-shrink: 0;
-      transition: all 0.2s; font-family: var(--font-body);
+    .player-btn.play-main:hover {
+      background: var(--accent-hover);
+      transform: scale(1.08);
+      box-shadow: 0 0 20px var(--accent-glow);
     }
-    .player-lyrics-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .player-progress-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .player-progress {
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .player-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      pointer-events: none;
+    }
+    .player-times {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .player-volume {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .player-vol-icon { font-size: 16px; color: var(--text-secondary); cursor: pointer; }
+    .player-vol-input {
+      width: 80px;
+      -webkit-appearance: none;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    .player-vol-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .player-lyrics-toggle {
+      background: rgba(232,0,61,0.12);
+      border: 1px solid rgba(232,0,61,0.25);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all var(--transition);
+    }
+    .player-lyrics-toggle:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
     @media (max-width: 640px) {
-      :root { --player-h: 68px; }
-      .player { gap: 10px; padding: 0 14px; }
+      :root { --player-height: 72px; }
+      .player { gap: 12px; padding: 0 12px; }
       .player-info { max-width: 100px; }
-      .player-volume, .player-lyrics-btn { display: none; }
-      .player-cover { width: 42px; height: 42px; }
+      .player-volume { display: none; }
+      .player-lyrics-toggle { display: none; }
+      .player-cover { width: 44px; height: 44px; font-size: 18px; }
     }
 
-    /* ── MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(8,3,18,0.92); backdrop-filter: blur(16px); z-index: 1100; align-items: center; justify-content: center; padding: 24px; }
+    /* ============================================================
+       LYRICS MODAL
+    ============================================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,4,20,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 1100;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
     .modal-overlay.open { display: flex; }
-    .modal { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 20px; max-width: 520px; width: 100%; max-height: 82vh; overflow-y: auto; padding: 36px; position: relative; }
-    .modal-close { position: absolute; top: 18px; right: 18px; width: 30px; height: 30px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 50%; color: var(--text-secondary); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; }
-    .modal-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
-    .modal-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-    .modal-cat { font-size: 13px; color: var(--accent); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; }
-    .lyrics-block { font-size: 15px; line-height: 2; color: var(--text-secondary); white-space: pre-line; }
 
-    /* ── EYEBROW LABEL ── */
-    .eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
+    .modal {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 540px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
     }
-    .eyebrow::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--accent); }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), color var(--transition);
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    .modal-title {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .modal-cat {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .lyrics-block {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      white-space: pre-line;
+    }
+    .lyrics-block .lyrics-line.active {
+      color: var(--accent);
+      font-weight: 500;
+    }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+    /* ============================================================
+       STYLES MUSICAUX
+    ============================================================ */
+    .musical-styles { background: var(--bg-main); text-align: center; }
+    .musical-styles h2 { margin-bottom: 12px; }
+    .musical-styles > .container > p { max-width: 500px; margin: 0 auto 40px; }
+    .style-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .style-pill {
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: default;
+      transition: all var(--transition);
+      will-change: transform;
+    }
+    .style-pill:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-active);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+    }
+    .style-pill.featured {
+      border-color: rgba(232,0,61,0.4);
+      color: #ff8aa6;
+    }
+    .style-pill.featured:hover {
+      background: rgba(232,0,61,0.12);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
 
-    /* ── MISC ── */
+    /* ============================================================
+       TESTIMONIALS
+    ============================================================ */
+    .testimonials { background: var(--bg-dark); text-align: center; }
+    .testimonials h2 { margin-bottom: 12px; }
+    .rating-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 8px 20px;
+      border-radius: var(--radius-pill);
+    }
+    .rating-stars { color: #FFD700; font-size: 16px; letter-spacing: 2px; }
+    .rating-text { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+    .rating-text strong { color: #fff; }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: left;
+    }
+    @media (max-width: 900px)  { .testi-grid { grid-template-columns: 1fr; } }
+
+    .testi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      will-change: transform;
+    }
+    .testi-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-active);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+    .testi-stars { color: #FFD700; font-size: 14px; letter-spacing: 1px; margin-bottom: 14px; }
+    .testi-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #7b2ff7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .testi-name { font-weight: 600; font-size: 14px; color: #fff; }
+    .testi-occasion { font-size: 12px; color: var(--accent); }
+
+    /* ============================================================
+       GUARANTEES
+    ============================================================ */
+    .guarantees { background: var(--bg-main); }
+    .guarantees h2 { text-align: center; margin-bottom: 48px; }
+    .guarantees-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 768px) { .guarantees-grid { grid-template-columns: 1fr; } }
+
+    .guarantee-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      text-align: center;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .guarantee-card:hover { transform: translateY(-4px); border-color: var(--border-active); }
+    .guarantee-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .guarantee-card h3 { color: #fff; margin-bottom: 10px; font-size: 18px; }
+
+    /* ============================================================
+       FAQ
+    ============================================================ */
+    .faq { background: var(--bg-dark); }
+    .faq h2 { text-align: center; margin-bottom: 12px; }
+    .faq-sub { text-align: center; max-width: 500px; margin: 0 auto 48px; }
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+    .faq-q-text {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .faq-icon {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      color: var(--text-secondary);
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+    .faq-item.open .faq-icon {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      transform: rotate(45deg);
+    }
+    .faq-item.open .faq-q { border-left: 3px solid var(--accent); padding-left: 14px; }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-a-inner {
+      padding: 0 0 20px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .faq-item.open .faq-a { max-height: 200px; }
+
+    /* ============================================================
+       CTA FINAL
+    ============================================================ */
+    .cta-final {
+      background: var(--bg-dark);
+      text-align: center;
+    }
+    .cta-final h2 { margin-bottom: 16px; }
+    .cta-final .container > p { max-width: 520px; margin: 0 auto 40px; font-size: 18px; }
+    .cta-btns { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #0d0517;
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-slogan { font-size: 14px; color: var(--text-secondary); }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+    }
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       SECTION HEADER HELPER
+    ============================================================ */
+    .section-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
     .text-center { text-align: center; }
-    .text-center .eyebrow { justify-content: center; }
-    .text-center .eyebrow::before { display: none; }
+    .mt-4 { margin-top: 16px; }
+    .mt-8 { margin-top: 32px; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+    /* ============================================================
+       WAVEFORM / VISUAL PLACEHOLDER
+    ============================================================ */
+    .waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 20px;
+    }
+    .waveform span {
+      display: block;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite;
+      opacity: 0.8;
+    }
+    .waveform span:nth-child(2) { animation-delay: 0.1s; }
+    .waveform span:nth-child(3) { animation-delay: 0.2s; }
+    .waveform span:nth-child(4) { animation-delay: 0.3s; }
+    .waveform span:nth-child(5) { animation-delay: 0.15s; }
+    @keyframes wave {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
 <nav class="navbar" role="navigation" aria-label="Navigation principale">
   <div class="container">
-    <a href="#" class="nav-logo">Mélo<em>Day</em></a>
+    <a href="#" class="nav-logo">Mélo<span>Day</span></a>
     <ul class="nav-links">
       <li><a href="#exemples">Exemples</a></li>
       <li><a href="#etapes">Comment ça marche</a></li>
       <li><a href="#temoignages">Avis</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20souhaite%20commander%20une%20chanson%20personnalis%C3%A9e%20MéloDay"
-       target="_blank" rel="noopener" class="btn btn-primary nav-cta">Commander</a>
+    <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20voudrais%20commander%20une%20chanson%20personnalis%C3%A9e%20avec%20M%C3%A9loDay%20!"
+       target="_blank" rel="noopener" class="btn btn-primary nav-cta">
+      <span class="btn-icon">🎵</span> Commander
+    </a>
     <button class="hamburger" aria-label="Menu" aria-expanded="false" id="hamburger">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<div class="nav-mobile" id="navMobile">
+<!-- Mobile Nav -->
+<div class="nav-mobile" id="navMobile" role="dialog" aria-label="Menu mobile">
   <a href="#exemples" onclick="closeMobileNav()">Exemples</a>
   <a href="#etapes" onclick="closeMobileNav()">Comment ça marche</a>
   <a href="#temoignages" onclick="closeMobileNav()">Avis clients</a>
   <a href="#faq" onclick="closeMobileNav()">FAQ</a>
-  <a href="https://wa.me/VOTRE_NUMERO" target="_blank" rel="noopener" class="btn btn-primary" onclick="closeMobileNav()">Commander</a>
+  <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20voudrais%20commander%20une%20chanson%20!"
+     target="_blank" rel="noopener" class="btn btn-primary" onclick="closeMobileNav()">
+    <span>🎵</span> Créer ma chanson
+  </a>
 </div>
 
 
-<!-- HERO -->
-<section class="hero" id="hero">
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" id="hero" aria-label="Accueil">
+  <div class="hero-grain"></div>
   <div class="container">
-    <div class="hero-eyebrow">Livraison en 24h · Satisfaction garantie</div>
-    <h1 class="hero-title">Offrez une chanson<br /><em>100% personnalisée</em></h1>
-    <p class="hero-sub">Paroles sur-mesure, mélodie originale, qualité studio — composée uniquement pour votre moment.</p>
-    <div class="hero-btns">
-      <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20souhaite%20commander%20une%20chanson%20personnalis%C3%A9e%20MéloDay"
-         target="_blank" rel="noopener" class="btn btn-primary">Créer ma chanson</a>
-      <a href="#exemples" class="btn btn-outline">Écouter des exemples</a>
+    <div class="hero-badge reveal">
+      🎉 Offre spéciale — Livraison en 24h
     </div>
-    <div class="hero-divider"></div>
-    <div class="hero-stats">
+    <h1 class="hero-title reveal" style="transition-delay:0.1s">
+      Offrez une chanson<br /><span>100% personnalisée</span>
+    </h1>
+    <p class="hero-sub reveal" style="transition-delay:0.2s">
+      Paroles sur-mesure, mélodie originale, qualité studio — créée uniquement pour votre moment.
+    </p>
+    <div class="hero-btns reveal" style="transition-delay:0.3s">
+      <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20voudrais%20commander%20une%20chanson%20personnalis%C3%A9e%20!"
+         target="_blank" rel="noopener" class="btn btn-primary">
+        <span class="btn-icon">🎵</span> Créer ma chanson
+      </a>
+      <a href="#exemples" class="btn btn-outline">
+        <span class="btn-icon">▶</span> Écouter des exemples
+      </a>
+    </div>
+
+    <div class="hero-stats reveal" style="transition-delay:0.4s">
       <div>
         <span class="hero-stat-num">500+</span>
         <span class="hero-stat-label">Chansons créées</span>
@@ -491,178 +1204,153 @@
         <span class="hero-stat-label">Délai de livraison</span>
       </div>
       <div>
-        <span class="hero-stat-num">4,9 / 5</span>
-        <span class="hero-stat-label">Satisfaction client</span>
+        <span class="hero-stat-num">4,9/5</span>
+        <span class="hero-stat-label">Note clients</span>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- INTRO SERVICE -->
-<section class="intro">
+<!-- ============================================================
+     INTRO SERVICE
+============================================================ -->
+<section class="intro" aria-labelledby="intro-title">
   <div class="container">
-    <div class="intro-inner">
-      <div class="intro-left">
-        <div class="eyebrow">Notre promesse</div>
-        <h2>Des chansons qui marquent les esprits</h2>
-        <p>Chaque création est composée sur-mesure pour capturer l'essence de votre moment le plus précieux.</p>
-        <div class="intro-points">
-          <div class="intro-point">
-            <div class="intro-point-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            </div>
-            <div class="intro-point-text">
-              <strong>Paroles 100% personnalisées</strong>
-              <span>Prénoms, souvenirs, émotions — chaque mot vous est dédié</span>
-            </div>
-          </div>
-          <div class="intro-point">
-            <div class="intro-point-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="intro-point-text">
-              <strong>Livraison en 24h</strong>
-              <span>Votre chanson prête à offrir le lendemain</span>
-            </div>
-          </div>
-          <div class="intro-point">
-            <div class="intro-point-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div class="intro-point-text">
-              <strong>Satisfaction garantie</strong>
-              <span>On retravaille jusqu'à ce que vous soyez comblé</span>
-            </div>
-          </div>
-        </div>
+    <span class="section-tag reveal">Notre promesse</span>
+    <h2 id="intro-title" class="reveal" style="transition-delay:0.1s">Des chansons qui marquent les esprits</h2>
+    <p class="reveal" style="transition-delay:0.2s">
+      Chaque chanson est composée sur-mesure pour capturer votre moment le plus précieux.
+    </p>
+
+    <div class="intro-points reveal" style="transition-delay:0.3s">
+      <div class="intro-point">
+        <div class="icon">🎵</div>
+        <span>Paroles 100% personnalisées</span>
       </div>
-      <div class="intro-right">
-        <div class="intro-stat-row">
-          <div class="intro-stat-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          </div>
-          <div>
-            <div class="intro-stat-num">500+</div>
-            <div class="intro-stat-label">Chansons livrées</div>
-          </div>
-        </div>
-        <div class="intro-stat-row">
-          <div class="intro-stat-icon" style="background: linear-gradient(135deg, #7b2ff7, #42145F)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <div>
-            <div class="intro-stat-num">4,9 / 5</div>
-            <div class="intro-stat-label">Note moyenne</div>
-          </div>
-        </div>
-        <div class="intro-stat-row">
-          <div class="intro-stat-icon" style="background: linear-gradient(135deg, #0d9488, #42145F)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <div class="intro-stat-num">24h</div>
-            <div class="intro-stat-label">Délai garanti</div>
-          </div>
-        </div>
+      <div class="intro-point">
+        <div class="icon">⚡</div>
+        <span>Livraison en 24h</span>
+      </div>
+      <div class="intro-point">
+        <div class="icon">⭐</div>
+        <span>Satisfaction garantie</span>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- 3 ÉTAPES -->
-<section class="steps" id="etapes">
+<!-- ============================================================
+     3 ÉTAPES
+============================================================ -->
+<section class="steps" id="etapes" aria-labelledby="steps-title">
   <div class="container">
-    <div class="steps-header">
-      <div class="eyebrow text-center" style="justify-content:center;">Processus</div>
-      <h2>En 3 étapes simples</h2>
-      <p>De l'idée à la chanson, nous gérons tout.</p>
-    </div>
+    <span class="section-tag text-center reveal" style="display:block">Processus</span>
+    <h2 id="steps-title" class="text-center reveal" style="transition-delay:0.1s">
+      Créez votre chanson en 3 étapes simples
+    </h2>
+    <p class="steps-sub reveal" style="transition-delay:0.2s">
+      Simple, rapide et entièrement sur-mesure — de l'idée à la chanson.
+    </p>
+
     <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div>
-          <h3>Décrivez votre moment</h3>
-          <p>Partagez-nous l'occasion, les prénoms, vos souvenirs et le style musical souhaité via WhatsApp ou formulaire.</p>
+      <div class="step-card reveal" style="transition-delay:0.1s">
+        <div class="step-num-wrap">
+          <span class="step-num-bg">1</span>
+          <div class="step-num">1</div>
         </div>
+        <h3>Parlez-nous de votre moment</h3>
+        <p>Décrivez-nous l'occasion, les prénoms, vos souvenirs et l'ambiance souhaitée via WhatsApp ou notre formulaire.</p>
       </div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div>
-          <h3>Nos compositeurs créent</h3>
-          <p>Paroles originales, mélodie sur-mesure, dans le genre musical de votre choix. Chaque note pensée pour vous.</p>
+      <div class="step-card reveal" style="transition-delay:0.2s">
+        <div class="step-num-wrap">
+          <span class="step-num-bg">2</span>
+          <div class="step-num">2</div>
         </div>
+        <h3>Nos compositeurs créent votre chanson</h3>
+        <p>Paroles originales, mélodie sur-mesure, dans le style musical de votre choix.</p>
       </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div>
-          <h3>Recevez votre création</h3>
-          <p>Fichier MP3 haute qualité livré en 24h, prêt à être offert et gardé pour toujours.</p>
+      <div class="step-card reveal" style="transition-delay:0.3s">
+        <div class="step-num-wrap">
+          <span class="step-num-bg">3</span>
+          <div class="step-num">3</div>
         </div>
+        <h3>Recevez votre création</h3>
+        <p>Votre chanson personnalisée livrée en 24h en qualité studio, prête à être offerte et gardée pour toujours.</p>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- GALERIE AUDIO -->
-<section class="gallery" id="exemples">
+<!-- ============================================================
+     GALERIE AUDIO
+============================================================ -->
+<section class="gallery" id="exemples" aria-labelledby="gallery-title">
   <div class="container">
-    <div class="gallery-header">
-      <div class="eyebrow text-center" style="justify-content:center;">Créations</div>
-      <h2>Écoutez nos créations</h2>
-      <p>Chaque chanson est unique — composée pour un moment, une personne, une histoire.</p>
-    </div>
-    <div class="filter-pills" role="group" aria-label="Filtrer par occasion">
-      <button class="pill active" data-filter="all">Toutes</button>
+    <span class="section-tag text-center reveal" style="display:block">Créations</span>
+    <h2 id="gallery-title" class="text-center reveal" style="transition-delay:0.1s">Écoutez nos créations</h2>
+    <p class="gallery-sub reveal" style="transition-delay:0.2s">
+      Chaque chanson est unique — écoutez ce que nos compositeurs ont créé pour d'autres moments précieux.
+    </p>
+
+    <div class="filter-pills reveal" style="transition-delay:0.3s" role="group" aria-label="Filtres par catégorie">
+      <button class="pill active" data-filter="all">Tous</button>
       <button class="pill" data-filter="mariage">Mariage</button>
       <button class="pill" data-filter="anniversaire">Anniversaire</button>
       <button class="pill" data-filter="bapteme">Baptême</button>
       <button class="pill" data-filter="fete">Fête</button>
       <button class="pill" data-filter="declaration">Déclaration</button>
     </div>
-    <div class="songs-grid" id="songsGrid" role="list"></div>
-  </div>
-</section>
 
-
-<!-- STYLES MUSICAUX -->
-<section class="musical-styles">
-  <div class="container">
-    <div class="styles-header">
-      <div class="eyebrow">Répertoire</div>
-      <h2>Styles musicaux disponibles</h2>
-      <p>Nos compositeurs s'adaptent à votre goût musical, quel qu'il soit.</p>
-    </div>
-    <div class="style-pills">
-      <span class="style-pill featured">Afrobeats — le plus demandé</span>
-      <span class="style-pill">Gospel</span>
-      <span class="style-pill">Zouk / Coupé-Décalé</span>
-      <span class="style-pill">Ballade romantique</span>
-      <span class="style-pill">Pop moderne</span>
-      <span class="style-pill">Folk acoustique</span>
-      <span class="style-pill">Jazz</span>
-      <span class="style-pill">Rap / Hip-hop</span>
+    <div class="songs-grid" id="songsGrid" role="list">
+      <!-- Cards injected by JS -->
     </div>
   </div>
 </section>
 
 
-<!-- TÉMOIGNAGES -->
-<section class="testimonials" id="temoignages">
+<!-- ============================================================
+     STYLES MUSICAUX
+============================================================ -->
+<section class="musical-styles" aria-labelledby="styles-title">
   <div class="container">
-    <div class="testimonials-header">
-      <h2>Ce que disent nos clients</h2>
-      <div class="rating-pill">
-        <span class="rating-stars">★★★★★</span>
-        <span class="rating-label"><strong>4,9 / 5</strong> · 500+ chansons</span>
-      </div>
+    <span class="section-tag reveal" style="display:block">Répertoire</span>
+    <h2 id="styles-title" class="reveal" style="transition-delay:0.1s">Styles musicaux disponibles</h2>
+    <p class="reveal" style="transition-delay:0.2s">
+      Quel que soit votre goût musical, nos compositeurs s'y adaptent parfaitement.
+    </p>
+    <div class="style-pills reveal" style="transition-delay:0.3s" role="list">
+      <span class="style-pill featured" role="listitem">🔥 Afrobeats <small style="opacity:0.7;font-size:11px"> — le plus demandé</small></span>
+      <span class="style-pill" role="listitem">🙏 Gospel</span>
+      <span class="style-pill" role="listitem">💃 Zouk / Coupé-Décalé</span>
+      <span class="style-pill" role="listitem">❤️ Ballade romantique</span>
+      <span class="style-pill" role="listitem">🎤 Pop moderne</span>
+      <span class="style-pill" role="listitem">🎸 Folk acoustique</span>
+      <span class="style-pill" role="listitem">🎷 Jazz</span>
+      <span class="style-pill" role="listitem">🎧 Rap / Hip-hop</span>
     </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     TÉMOIGNAGES
+============================================================ -->
+<section class="testimonials" id="temoignages" aria-labelledby="testi-title">
+  <div class="container">
+    <span class="section-tag reveal" style="display:block">Ils nous font confiance</span>
+    <h2 id="testi-title" class="reveal" style="transition-delay:0.1s">Ce que disent nos clients</h2>
+    <div class="rating-bar reveal" style="transition-delay:0.2s">
+      <span class="rating-stars">★★★★★</span>
+      <span class="rating-text"><strong>4,9/5</strong> · 500+ chansons livrées</span>
+    </div>
+
     <div class="testi-grid">
-      <div class="testi-card">
+      <div class="testi-card reveal" style="transition-delay:0.1s">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"MéloDay a composé la chanson de notre mariage. Tout le monde a pleuré de joie. Un moment gravé dans nos cœurs pour toujours."</p>
+        <p class="testi-text">"MéloDay a composé la chanson de notre mariage. Tout le monde a pleuré de joie. Un moment inoubliable gravé dans nos cœurs."</p>
         <div class="testi-author">
           <div class="testi-avatar">AK</div>
           <div>
@@ -671,9 +1359,10 @@
           </div>
         </div>
       </div>
-      <div class="testi-card">
+
+      <div class="testi-card reveal" style="transition-delay:0.2s">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"Une chanson rien que pour mes 30 ans — tellement personnelle et magique. Je l'écoute encore tous les jours."</p>
+        <p class="testi-text">"Une chanson rien que pour mes 30 ans, magique et tellement personnelle. Je l'écoute encore tous les jours. Merci MéloDay !"</p>
         <div class="testi-author">
           <div class="testi-avatar">MT</div>
           <div>
@@ -682,9 +1371,10 @@
           </div>
         </div>
       </div>
-      <div class="testi-card">
+
+      <div class="testi-card reveal" style="transition-delay:0.3s">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"Livré en 24h comme promis. Un cadeau inoubliable pour le baptême de notre fils. La famille entière était touchée."</p>
+        <p class="testi-text">"Livré en 24h exactement comme promis. Un cadeau inoubliable pour le baptême de notre fils. La famille était touchée aux larmes."</p>
         <div class="testi-author">
           <div class="testi-avatar">JP</div>
           <div>
@@ -698,155 +1388,154 @@
 </section>
 
 
-<!-- GARANTIES -->
-<section class="guarantees">
+<!-- ============================================================
+     GARANTIES
+============================================================ -->
+<section class="guarantees" aria-labelledby="guarantees-title">
   <div class="container">
-    <div class="guarantees-header">
-      <div class="eyebrow text-center" style="justify-content:center;">Nos engagements</div>
-      <h2>Votre confiance, méritée</h2>
-      <p>Trois promesses simples, tenues à chaque commande.</p>
-    </div>
-    <div class="guarantees-grid">
-      <div class="guarantee-card">
-        <div class="guarantee-icon-wrap">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
+    <h2 id="guarantees-title" class="reveal">Nos engagements</h2>
+    <div class="guarantees-grid mt-8">
+      <div class="guarantee-card reveal" style="transition-delay:0.1s">
+        <span class="guarantee-icon">🔒</span>
         <h3>Paiement sécurisé</h3>
         <p>Vos transactions sont protégées. Réglez en toute sérénité via les moyens de paiement de votre choix.</p>
       </div>
-      <div class="guarantee-card">
-        <div class="guarantee-icon-wrap">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </div>
+      <div class="guarantee-card reveal" style="transition-delay:0.2s">
+        <span class="guarantee-icon">🔄</span>
         <h3>Satisfaction garantie</h3>
-        <p>On retravaille votre chanson jusqu'à ce que vous soyez totalement comblé. Sans limite de révisions.</p>
+        <p>On retravaille votre chanson jusqu'à ce que vous soyez totalement comblé. Aucun compromis.</p>
       </div>
-      <div class="guarantee-card">
-        <div class="guarantee-icon-wrap">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8003D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        </div>
-        <h3>Livraison en 24h</h3>
-        <p>Votre chanson prête à offrir rapidement — même pour les occasions de dernière minute.</p>
+      <div class="guarantee-card reveal" style="transition-delay:0.3s">
+        <span class="guarantee-icon">⚡</span>
+        <h3>Livraison 24h</h3>
+        <p>Ta chanson dans tes mains rapidement. Parfait pour les cadeaux de dernière minute ou les surprises.</p>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- FAQ -->
-<section class="faq" id="faq">
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section class="faq" id="faq" aria-labelledby="faq-title">
   <div class="container">
-    <div class="faq-header">
-      <div class="faq-header-left">
-        <div class="eyebrow">Questions fréquentes</div>
-        <h2>On répond à tout</h2>
-        <p>Une question ? La réponse est sûrement ici. Sinon, écrivez-nous sur WhatsApp.</p>
-        <a href="https://wa.me/VOTRE_NUMERO" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:8px">Nous contacter</a>
+    <span class="section-tag text-center reveal" style="display:block">Questions fréquentes</span>
+    <h2 id="faq-title" class="text-center reveal" style="transition-delay:0.1s">On répond à tout</h2>
+    <p class="faq-sub reveal" style="transition-delay:0.2s">Une question ? La réponse est sûrement ici.</p>
+
+    <div class="faq-list reveal" style="transition-delay:0.3s" role="list">
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">Combien de temps pour recevoir ma chanson ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">24h après validation de votre commande. Pour les occasions urgentes, contactez-nous sur WhatsApp — on s'adapte à votre délai.</div></div>
       </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">Combien de temps pour recevoir ma chanson ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">24h après validation de votre commande. Pour les occasions urgentes, contactez-nous directement — on s'adapte.</div></div>
+
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">Comment nous transmettre les informations ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
         </div>
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">Comment vous transmettre les informations ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">Via WhatsApp ou notre formulaire. Vous partagez prénoms, occasion, souvenirs et style musical souhaité — on s'occupe du reste.</div></div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Via WhatsApp directement ou via notre formulaire en ligne. Vous nous partagez les prénoms, l'occasion, vos souvenirs et le style musical souhaité.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">Quels styles musicaux proposez-vous ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
         </div>
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">Quels styles musicaux proposez-vous ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">Afrobeats, Gospel, Zouk, Coupé-Décalé, Ballade romantique, Pop moderne, Folk acoustique, Jazz, Rap. Et plus — contactez-nous si votre style de cœur n'est pas listé.</div></div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Afrobeats, Gospel, Zouk, Coupé-Décalé, Ballade romantique, Pop moderne, Folk acoustique, Jazz, Rap / Hip-hop. Si votre style de cœur n'est pas dans la liste, contactez-nous — on s'adapte !</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">Puis-je demander des modifications ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
         </div>
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">Puis-je demander des modifications ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">Oui, sans limite. On retravaille jusqu'à votre satisfaction totale. Votre bonheur est notre priorité.</div></div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Oui, absolument. On retravaille votre chanson jusqu'à votre satisfaction totale. Pas de limite sur les révisions — votre bonheur est notre priorité.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">Comment recevez-vous la chanson ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
         </div>
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">Comment est livrée la chanson ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">Fichier MP3 haute qualité directement par WhatsApp ou email. Prêt à écouter, partager et garder précieusement.</div></div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Fichier MP3 haute qualité livré directement par WhatsApp ou par email. Vous pouvez l'écouter, la partager et la garder précieusement.</div></div>
+      </div>
+
+      <div class="faq-item" role="listitem">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          <span class="faq-q-text">La chanson est-elle vraiment unique ?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
         </div>
-        <div class="faq-item">
-          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
-            <span class="faq-q-text">La chanson est-elle vraiment unique ?</span>
-            <span class="faq-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-          </div>
-          <div class="faq-a"><div class="faq-a-inner">Oui. Chaque création est composée exclusivement pour vous. Personne d'autre ne recevra jamais la même chanson.</div></div>
-        </div>
+        <div class="faq-a" role="region"><div class="faq-a-inner">Oui, chaque création est composée exclusivement pour vous. Vos paroles, votre mélodie, votre moment — personne d'autre ne recevra la même chanson.</div></div>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- CTA FINAL -->
-<section class="cta-final">
+<!-- ============================================================
+     CTA FINAL
+============================================================ -->
+<section class="cta-final" aria-labelledby="cta-title">
   <div class="container">
-    <div class="cta-final-inner">
-      <h2>Votre moment mérite sa chanson</h2>
-      <p>Contactez-nous maintenant — réponse en moins d'une heure.</p>
-      <div class="cta-btns">
-        <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20souhaite%20commander%20une%20chanson%20MéloDay"
-           target="_blank" rel="noopener" class="btn btn-primary">Commander sur WhatsApp</a>
-        <a href="https://instagram.com/VOTRE_COMPTE" target="_blank" rel="noopener" class="btn btn-outline">Suivre sur Instagram</a>
-      </div>
+    <span class="section-tag reveal" style="display:block">Commencer maintenant</span>
+    <h2 id="cta-title" class="reveal" style="transition-delay:0.1s">Votre moment mérite sa chanson</h2>
+    <p class="reveal" style="transition-delay:0.2s">
+      Contactez-nous maintenant — réponse en moins d'1h
+    </p>
+    <div class="cta-btns reveal" style="transition-delay:0.3s">
+      <a href="https://wa.me/VOTRE_NUMERO?text=Bonjour%2C%20je%20voudrais%20commander%20une%20chanson%20personnalis%C3%A9e%20!"
+         target="_blank" rel="noopener" class="btn btn-primary">
+        <span class="btn-icon">💬</span> Commander sur WhatsApp
+      </a>
+      <a href="https://instagram.com/VOTRE_COMPTE" target="_blank" rel="noopener" class="btn btn-outline">
+        <span class="btn-icon">📸</span> Suivre sur Instagram
+      </a>
     </div>
   </div>
 </section>
 
 
-<!-- FOOTER -->
+<!-- ============================================================
+     FOOTER
+============================================================ -->
 <footer role="contentinfo">
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="footer-logo">Mélo<em>Day</em></div>
-        <div class="footer-slogan">La chanson de ton moment</div>
-      </div>
-      <nav class="footer-links" aria-label="Liens sociaux">
-        <a href="#" target="_blank" rel="noopener">Facebook</a>
-        <a href="#" target="_blank" rel="noopener">TikTok</a>
-        <a href="#" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://wa.me/VOTRE_NUMERO" target="_blank" rel="noopener">WhatsApp</a>
+      <div class="footer-logo">Mélo<span>Day</span></div>
+      <p class="footer-slogan">La chanson de ton moment</p>
+      <nav class="footer-links" aria-label="Réseaux sociaux">
+        <a href="#" aria-label="Facebook">📘 Facebook</a>
+        <a href="#" aria-label="TikTok">🎵 TikTok</a>
+        <a href="#" aria-label="Instagram">📸 Instagram</a>
+        <a href="https://wa.me/VOTRE_NUMERO" aria-label="WhatsApp">💬 WhatsApp</a>
       </nav>
+      <p class="footer-copy">© 2025 MéloDay · Tous droits réservés</p>
     </div>
-    <p class="footer-copy">© 2025 MéloDay · Tous droits réservés</p>
   </div>
 </footer>
 
 
-<!-- PLAYER -->
+<!-- ============================================================
+     STICKY AUDIO PLAYER
+============================================================ -->
 <div class="player" id="audioPlayer" role="complementary" aria-label="Lecteur audio">
-  <div class="player-cover" id="playerCover"></div>
+  <div class="player-cover" id="playerCover">🎵</div>
   <div class="player-info">
     <div class="player-title" id="playerTitle">—</div>
     <div class="player-cat" id="playerCat">—</div>
   </div>
+
   <div class="player-controls">
-    <button class="player-btn" id="btnPrev" aria-label="Précédent">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-    </button>
-    <button class="player-btn play-main" id="btnPlay" aria-label="Lecture / Pause">
-      <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </button>
-    <button class="player-btn" id="btnNext" aria-label="Suivant">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-    </button>
+    <button class="player-btn" id="btnPrev" aria-label="Précédent">⏮</button>
+    <button class="player-btn play-main" id="btnPlay" aria-label="Lecture / Pause">▶</button>
+    <button class="player-btn" id="btnNext" aria-label="Suivant">⏭</button>
   </div>
+
   <div class="player-progress-wrap">
     <div class="player-progress" id="progressBar" role="slider" aria-label="Progression">
       <div class="player-progress-fill" id="progressFill"></div>
@@ -856,16 +1545,22 @@
       <span id="timeDuration">0:00</span>
     </div>
   </div>
+
   <div class="player-volume">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8A8C8" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    <span class="player-vol-icon" id="volIcon">🔊</span>
     <input type="range" class="player-vol-input" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" aria-label="Volume" />
   </div>
-  <button class="player-lyrics-btn" id="lyricsToggle">Paroles</button>
+
+  <button class="player-lyrics-toggle" id="lyricsToggle">🎤 Paroles</button>
 </div>
 
+<!-- Hidden audio element -->
 <audio id="audioEl" preload="metadata"></audio>
 
-<!-- MODAL PAROLES -->
+
+<!-- ============================================================
+     LYRICS MODAL
+============================================================ -->
 <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
     <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
@@ -876,195 +1571,554 @@
 </div>
 
 
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
 <script>
-  /* DATA */
-  const GRADIENTS = [
+  /* ==========================================================
+     DATA
+  ========================================================== */
+  const COVER_GRADIENTS = [
     'linear-gradient(135deg,#7b2ff7,#E8003D)',
-    'linear-gradient(135deg,#E8003D,#c2410c)',
-    'linear-gradient(135deg,#0369a1,#42145F)',
-    'linear-gradient(135deg,#be123c,#7b2ff7)',
-    'linear-gradient(135deg,#065f46,#42145F)',
-    'linear-gradient(135deg,#b45309,#E8003D)',
+    'linear-gradient(135deg,#E8003D,#ff7c00)',
+    'linear-gradient(135deg,#00b4d8,#42145F)',
+    'linear-gradient(135deg,#ff6b6b,#7b2ff7)',
+    'linear-gradient(135deg,#2d6a4f,#42145F)',
+    'linear-gradient(135deg,#f77f00,#E8003D)',
   ];
-  const CAT_LABELS = { mariage:'Mariage', anniversaire:'Anniversaire', bapteme:'Baptême', fete:'Fête', declaration:'Déclaration' };
+
+  const CATEGORY_LABELS = {
+    mariage: 'Mariage',
+    anniversaire: 'Anniversaire',
+    bapteme: 'Baptême',
+    fete: 'Fête',
+    declaration: 'Déclaration',
+  };
 
   const songs = [
-    { id:1, title:'Pour toujours ensemble', category:'mariage', description:'Afrobeat composé pour Kouassi & Ama', audio:'audio/mariage1.mp3', duration:'3:42', initials:'KA',
-      lyrics:`Couplet 1\nKouassi et Ama, unis pour toujours\nCe jour si beau, ce premier jour\nVos mains jointes, vos cœurs qui battent\nUne promesse qui jamais ne s'arrête\n\nRefrain\nPour toujours ensemble, sous le même ciel\nVotre amour est réel, votre amour est éternel\nPour toujours ensemble, au fil des saisons\nVous avancez main dans la main sur ce long chemin` },
-    { id:2, title:'Mes 30 ans de bonheur', category:'anniversaire', description:'Gospel moderne pour les 30 ans de Marie', audio:'audio/anniversaire1.mp3', duration:'2:58', initials:'MT',
-      lyrics:`Couplet 1\nMarie, aujourd'hui tu fêtes tes 30 ans\nTrente belles années, trente instants brillants\nTu rayonnes, tu brilles, tu illumines tout\nTa vie est un cadeau qui s'offre à nous\n\nRefrain\nJoyeux, joyeux anniversaire Marie\nQue ta vie soit remplie de joie infinie\nTrente ans d'amour, trente ans de grâce\nSur ce chemin que le bonheur t'embrasse` },
-    { id:3, title:'Bienvenue petit ange', category:'bapteme', description:'Berceuse afropop pour le baptême de Noah', audio:'audio/bapteme1.mp3', duration:'3:15', initials:'NO',
-      lyrics:`Couplet 1\nNoah, petit ange venu du ciel\nTu illumines nos vies de ton sourire si bel\nTes yeux curieux découvrent le monde\nEt notre amour autour de toi abonde\n\nRefrain\nBienvenue petit ange, bienvenue parmi nous\nTu es notre bonheur, tu es notre joie\nBienvenue petit ange, qu'on t'aime toujours\nQue Dieu te guide sur ton chemin chaque jour` },
-    { id:4, title:'Cette nuit on danse', category:'fete', description:'Afrobeats festif pour une soirée de fin d'année', audio:'audio/fete1.mp3', duration:'3:30', initials:'FY',
-      lyrics:`Couplet 1\nLa musique résonne, les cœurs s'enflamment\nCette nuit est à nous, personne ne se calme\nOn a bossé dur, on mérite ce soir\nEnsemble on célèbre, c'est notre victoire\n\nRefrain\nCette nuit on danse, on oublie tout\nLevez les mains, faites tourner tout\nCette nuit on rit, cette nuit on brille\nUne famille, une équipe, une famille` },
-    { id:5, title:'Je t\'aime depuis toujours', category:'declaration', description:'Ballade romantique pour Jean & Sophie', audio:'audio/declaration1.mp3', duration:'4:05', initials:'JS',
-      lyrics:`Couplet 1\nSophie, depuis le premier regard\nMon cœur t'appartient, tu es mon rempart\nDans tes yeux j'ai trouvé mon chemin\nDans ton sourire, je vois mon destin\n\nRefrain\nJe t'aime depuis toujours, je t'aimerai toujours\nTu es mon soleil, tu es mes jours\nJe t'aime depuis toujours, depuis le premier jour\nSophie, tu es ma vie, mon unique amour` },
-    { id:6, title:'Joyeux anniversaire Mamie', category:'anniversaire', description:'Chanson douce pour les 70 ans de grand-mère', audio:'audio/anniversaire2.mp3', duration:'2:45', initials:'70',
-      lyrics:`Couplet 1\nMamie, aujourd'hui c'est ta fête\nSoixante-dix ans, quelle belle conquête\nTu nous as donné tant d'amour\nTon sourire illumine nos jours\n\nRefrain\nJoyeux anniversaire Mamie\nNous t'aimons de tout notre cœur\nTu es notre perle, notre vie\nTu es notre plus grand bonheur` },
+    {
+      id: 1,
+      title: 'Pour toujours ensemble',
+      category: 'mariage',
+      description: 'Afrobeat doux composé pour Kouassi & Ama',
+      audio: 'audio/mariage1.mp3',
+      duration: '3:42',
+      initials: 'KA',
+      lyrics: `Couplet 1:
+Kouassi et Ama, unis pour toujours
+Ce jour si beau, ce premier jour
+Vos mains jointes, vos cœurs qui battent
+Une promesse qui jamais ne s'arrête
+
+Refrain:
+Pour toujours ensemble, sous le même ciel
+Votre amour est réel, votre amour est éternel
+Pour toujours ensemble, au fil des saisons
+Vous avancez main dans la main sur ce long chemin
+
+Couplet 2:
+Les rires partagés, les larmes essuyées
+Chaque instant vécu, chaque souvenir gardé
+Dans vos yeux se reflète une vie entière
+Une histoire d'amour si belle et sincère
+
+(Refrain)`,
+    },
+    {
+      id: 2,
+      title: 'Mes 30 ans de bonheur',
+      category: 'anniversaire',
+      description: 'Gospel moderne pour les 30 ans de Marie',
+      audio: 'audio/anniversaire1.mp3',
+      duration: '2:58',
+      initials: 'MT',
+      lyrics: `Couplet 1:
+Marie, aujourd'hui tu fêtes tes 30 ans
+Trente belles années, trente instants brillants
+Tu rayonnes, tu brilles, tu illumines tout
+Ta vie est un cadeau qui s'offre à nous
+
+Refrain:
+Joyeux, joyeux anniversaire Marie
+Que ta vie soit remplie de joie infinie
+Trente ans d'amour, trente ans de grâce
+Sur ce chemin que le bonheur t'embrasse
+
+Pont:
+Lève les mains, célèbre ce jour
+C'est ton moment, fête-le toujours
+(Refrain)`,
+    },
+    {
+      id: 3,
+      title: 'Bienvenue petit ange',
+      category: 'bapteme',
+      description: 'Berceuse afropop pour le baptême de Noah',
+      audio: 'audio/bapteme1.mp3',
+      duration: '3:15',
+      initials: 'NO',
+      lyrics: `Couplet 1:
+Noah, petit ange venu du ciel
+Tu illumines nos vies de ton sourire si bel
+Tes yeux curieux découvrent le monde
+Et notre amour autour de toi abonde
+
+Refrain:
+Bienvenue petit ange, bienvenue parmi nous
+Tu es notre bonheur, tu es notre joie
+Bienvenue petit ange, qu'on t'aime toujours
+Que Dieu te guide sur ton chemin chaque jour
+
+Couplet 2:
+Ce jour de baptême, un nouveau départ
+Entouré de famille, rempli d'espoir
+Ta vie commence ici, belle et lumineuse
+Chaque instant avec toi est précieux
+
+(Refrain)`,
+    },
+    {
+      id: 4,
+      title: 'Cette nuit on danse',
+      category: 'fete',
+      description: 'Afrobeats festif pour une soirée de fin d'année',
+      audio: 'audio/fete1.mp3',
+      duration: '3:30',
+      initials: 'FY',
+      lyrics: `Couplet 1:
+La musique résonne, les cœurs s'enflamment
+Cette nuit est à nous, personne ne se calme
+On a bossé dur, on mérite ce soir
+Ensemble on célèbre, c'est notre victoire
+
+Refrain:
+Cette nuit on danse, on oublie tout
+Levez les mains, faites tourner tout
+Cette nuit on rit, cette nuit on brille
+Une famille, une équipe, une famille
+
+Pont:
+La fête commence, tout le monde est là
+Que la nuit soit longue, enjoy ça
+(Refrain)`,
+    },
+    {
+      id: 5,
+      title: 'Je t'aime depuis toujours',
+      category: 'declaration',
+      description: 'Ballade romantique pour Jean & Sophie',
+      audio: 'audio/declaration1.mp3',
+      duration: '4:05',
+      initials: 'JS',
+      lyrics: `Couplet 1:
+Sophie, depuis le premier regard
+Mon cœur t'appartient, tu es mon rempart
+Dans tes yeux j'ai trouvé mon chemin
+Dans ton sourire, je vois mon destin
+
+Refrain:
+Je t'aime depuis toujours, je t'aimerai toujours
+Tu es mon soleil, tu es mes jours
+Je t'aime depuis toujours, depuis le premier jour
+Sophie, tu es ma vie, mon unique amour
+
+Couplet 2:
+Les mots me manquent pour te dire à quel point
+Tu comptes pour moi, tu es mon lien
+Avec toi chaque jour est une fête
+Et sans toi le monde s'arrête
+
+(Refrain)`,
+    },
+    {
+      id: 6,
+      title: 'Joyeux anniversaire Mamie',
+      category: 'anniversaire',
+      description: 'Chanson douce pour les 70 ans de grand-mère',
+      audio: 'audio/anniversaire2.mp3',
+      duration: '2:45',
+      initials: '70',
+      lyrics: `Couplet 1:
+Mamie, aujourd'hui c'est ta fête
+Soixante-dix ans, quelle belle conquête
+Tu nous as donné tant d'amour
+Ton sourire illumine nos jours
+
+Refrain:
+Joyeux anniversaire Mamie
+Nous t'aimons de tout notre cœur
+Tu es notre perle, notre vie
+Tu es notre plus grand bonheur
+
+Couplet 2:
+Tes bras chauds, ta douceur sans pareil
+Tes histoires qui bercent nos nuits
+Mamie, tu es notre merveille
+La plus belle de nos vies
+
+(Refrain)`,
+    },
   ];
 
-  /* BUILD CARDS */
+  /* ==========================================================
+     BUILD SONG CARDS
+  ========================================================== */
+  const grid = document.getElementById('songsGrid');
+
   function buildCards() {
-    const grid = document.getElementById('songsGrid');
     grid.innerHTML = '';
     songs.forEach((song, i) => {
       const card = document.createElement('article');
-      card.className = 'song-card';
+      card.className = 'song-card reveal';
+      card.style.transitionDelay = `${i * 0.08}s`;
       card.dataset.category = song.category;
       card.dataset.id = song.id;
       card.setAttribute('role', 'listitem');
       card.innerHTML = `
         <div class="song-cover">
-          <div class="song-cover-bg" style="background:${GRADIENTS[i]}"></div>
+          <div class="song-cover-inner" style="background:${COVER_GRADIENTS[i % COVER_GRADIENTS.length]}"></div>
           <span class="song-initials">${song.initials}</span>
-          <span class="song-badge">${CAT_LABELS[song.category]}</span>
-          <button class="song-play-btn" aria-label="Écouter ${song.title}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-          </button>
+          <span class="song-badge">${CATEGORY_LABELS[song.category]}</span>
+          <button class="song-play-btn" aria-label="Écouter ${song.title}">▶</button>
         </div>
         <div class="song-progress-mini"><div class="song-progress-mini-fill"></div></div>
         <div class="song-info">
           <div class="song-title">${song.title}</div>
           <div class="song-desc">${song.description}</div>
           <div class="song-meta">
-            <span class="song-duration">${song.duration}</span>
-            <button class="song-lyrics-btn">Voir les paroles</button>
+            <span class="song-duration">🎵 ${song.duration}</span>
+            <button class="song-lyrics-btn" aria-label="Voir les paroles de ${song.title}">Voir les paroles</button>
           </div>
-        </div>`;
-      card.querySelector('.song-play-btn').addEventListener('click', e => { e.stopPropagation(); playSong(song.id); });
+        </div>
+      `;
+
+      card.querySelector('.song-play-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        playSong(song.id);
+      });
+
       card.addEventListener('click', () => playSong(song.id));
-      card.querySelector('.song-lyrics-btn').addEventListener('click', e => { e.stopPropagation(); openLyrics(song.id); });
+
+      card.querySelector('.song-lyrics-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLyrics(song.id);
+      });
+
       grid.appendChild(card);
     });
+
+    // Re-trigger reveal observer for new cards
+    observeReveal();
   }
 
-  /* FILTER */
+  /* ==========================================================
+     FILTER
+  ========================================================== */
   document.querySelectorAll('.pill').forEach(pill => {
     pill.addEventListener('click', () => {
       document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
-      const f = pill.dataset.filter;
-      document.querySelectorAll('.song-card').forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.category !== f));
+      const filter = pill.dataset.filter;
+      document.querySelectorAll('.song-card').forEach(card => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('hidden', !show);
+      });
     });
   });
 
-  /* AUDIO PLAYER */
-  const audio    = document.getElementById('audioEl');
-  const player   = document.getElementById('audioPlayer');
-  const pCover   = document.getElementById('playerCover');
-  const pTitle   = document.getElementById('playerTitle');
-  const pCat     = document.getElementById('playerCat');
-  const btnPlay  = document.getElementById('btnPlay');
-  const iconPlay = document.getElementById('iconPlay');
-  const iconPause= document.getElementById('iconPause');
-  const pFill    = document.getElementById('progressFill');
-  const pBar     = document.getElementById('progressBar');
-  const tElapsed = document.getElementById('timeElapsed');
-  const tDur     = document.getElementById('timeDuration');
-  const volSlider= document.getElementById('volumeSlider');
+  /* ==========================================================
+     AUDIO PLAYER
+  ========================================================== */
+  const audio = document.getElementById('audioEl');
+  const player = document.getElementById('audioPlayer');
+  const playerCover = document.getElementById('playerCover');
+  const playerTitle = document.getElementById('playerTitle');
+  const playerCat = document.getElementById('playerCat');
+  const btnPlay = document.getElementById('btnPlay');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const progressFill = document.getElementById('progressFill');
+  const progressBar = document.getElementById('progressBar');
+  const timeElapsed = document.getElementById('timeElapsed');
+  const timeDuration = document.getElementById('timeDuration');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const lyricsToggle = document.getElementById('lyricsToggle');
 
-  let currentId = null, isPlaying = false, simInterval = null, simProgress = 0;
-  const fmt = s => isNaN(s) ? '0:00' : `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  let currentId = null;
+  let isPlaying = false;
 
-  function setPlayIcon(playing) {
-    iconPlay.style.display = playing ? 'none' : 'block';
-    iconPause.style.display = playing ? 'block' : 'none';
-    isPlaying = playing;
+  function formatTime(sec) {
+    if (isNaN(sec)) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function getSong(id) { return songs.find(s => s.id === id); }
+
+  function updatePlayerUI(song) {
+    playerTitle.textContent = song.title;
+    playerCat.textContent = CATEGORY_LABELS[song.category];
+    playerCover.textContent = song.initials;
+    const idx = songs.findIndex(s => s.id === song.id);
+    playerCover.style.background = COVER_GRADIENTS[idx % COVER_GRADIENTS.length];
+    document.title = `${song.title} — MéloDay`;
   }
 
   function playSong(id) {
-    const song = songs.find(s => s.id === id);
+    const song = getSong(id);
     if (!song) return;
+
+    // Remove playing class from all cards
     document.querySelectorAll('.song-card').forEach(c => c.classList.remove('playing'));
+
+    if (currentId === id && !audio.paused) {
+      // Pause
+      audio.pause();
+      isPlaying = false;
+      btnPlay.textContent = '▶';
+      return;
+    }
+
     currentId = id;
-    pTitle.textContent = song.title;
-    pCat.textContent = CAT_LABELS[song.category];
-    const idx = songs.findIndex(s => s.id === id);
-    pCover.style.background = GRADIENTS[idx];
-    pCover.textContent = song.initials;
+    updatePlayerUI(song);
+
+    // Show player
     player.classList.add('visible');
+
+    // Try to load real audio, fallback gracefully
     audio.src = song.audio;
-    audio.volume = parseFloat(volSlider.value);
+    audio.volume = parseFloat(volumeSlider.value);
     audio.load();
-    audio.play().then(() => { setPlayIcon(true); }).catch(() => { setPlayIcon(true); simulate(song); });
-    document.querySelector(`.song-card[data-id="${id}"]`)?.classList.add('playing');
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          isPlaying = true;
+          btnPlay.textContent = '⏸';
+        })
+        .catch(() => {
+          // Audio file not found — simulate playback for demo
+          isPlaying = true;
+          btnPlay.textContent = '⏸';
+          simulatePlayback(song);
+        });
+    }
+
+    // Mark card as playing
+    const activeCard = document.querySelector(`.song-card[data-id="${id}"]`);
+    if (activeCard) activeCard.classList.add('playing');
   }
 
-  function simulate(song) {
+  // Demo simulation when no real audio file exists
+  let simInterval = null;
+  let simProgress = 0;
+
+  function simulatePlayback(song) {
     clearInterval(simInterval);
     simProgress = 0;
     const parts = song.duration.split(':');
-    const total = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-    tDur.textContent = song.duration;
+    const totalSec = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    timeDuration.textContent = song.duration;
+
     simInterval = setInterval(() => {
       if (!isPlaying) { clearInterval(simInterval); return; }
-      simProgress++;
-      if (simProgress >= total) { simProgress = 0; const idx = songs.findIndex(s=>s.id===currentId); playSong(songs[(idx+1)%songs.length].id); return; }
-      const pct = (simProgress/total)*100;
-      pFill.style.width = pct+'%';
-      tElapsed.textContent = fmt(simProgress);
-      document.querySelector(`.song-card[data-id="${currentId}"] .song-progress-mini-fill`)?.style && (document.querySelector(`.song-card[data-id="${currentId}"] .song-progress-mini-fill`).style.width = pct+'%');
+      simProgress += 1;
+      if (simProgress >= totalSec) {
+        simProgress = 0;
+        // Auto-advance
+        const idx = songs.findIndex(s => s.id === currentId);
+        const nextIdx = (idx + 1) % songs.length;
+        playSong(songs[nextIdx].id);
+        return;
+      }
+      const pct = (simProgress / totalSec) * 100;
+      progressFill.style.width = pct + '%';
+      timeElapsed.textContent = formatTime(simProgress);
+
+      // Update mini bar on card
+      const activeCard = document.querySelector(`.song-card[data-id="${currentId}"]`);
+      if (activeCard) {
+        const fill = activeCard.querySelector('.song-progress-mini-fill');
+        if (fill) fill.style.width = pct + '%';
+      }
     }, 1000);
   }
 
-  audio.addEventListener('timeupdate', () => { if(audio.duration){const p=(audio.currentTime/audio.duration)*100; pFill.style.width=p+'%'; tElapsed.textContent=fmt(audio.currentTime); tDur.textContent=fmt(audio.duration);} });
-  audio.addEventListener('ended', () => { const idx=songs.findIndex(s=>s.id===currentId); playSong(songs[(idx+1)%songs.length].id); });
-
-  pBar.addEventListener('click', e => {
-    const pct = (e.clientX - pBar.getBoundingClientRect().left) / pBar.offsetWidth;
-    if (audio.duration) { audio.currentTime = pct * audio.duration; }
-    else { const parts=(songs.find(s=>s.id===currentId)?.duration||'0:00').split(':'); simProgress=Math.floor(pct*(parseInt(parts[0])*60+parseInt(parts[1]))); }
+  // Real audio events
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = pct + '%';
+      timeElapsed.textContent = formatTime(audio.currentTime);
+      timeDuration.textContent = formatTime(audio.duration);
+    }
   });
 
+  audio.addEventListener('ended', () => {
+    const idx = songs.findIndex(s => s.id === currentId);
+    const nextIdx = (idx + 1) % songs.length;
+    playSong(songs[nextIdx].id);
+  });
+
+  audio.addEventListener('error', () => {
+    // File not found — already handled by playPromise catch
+  });
+
+  // Progress bar click
+  progressBar.addEventListener('click', (e) => {
+    const rect = progressBar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    if (audio.duration) {
+      audio.currentTime = pct * audio.duration;
+    } else {
+      const parts = (getSong(currentId)?.duration || '0:00').split(':');
+      const total = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+      simProgress = Math.floor(pct * total);
+    }
+  });
+
+  // Play/Pause button
   btnPlay.addEventListener('click', () => {
     if (!currentId) { playSong(songs[0].id); return; }
-    if (!audio.paused) { audio.pause(); setPlayIcon(false); }
-    else if (audio.src && !audio.src.endsWith('/')) { audio.play().catch(()=>{}); setPlayIcon(true); }
-    else { const p=!isPlaying; setPlayIcon(p); }
+    if (audio.src && !audio.src.endsWith('audio/') && !audio.paused) {
+      audio.pause();
+      isPlaying = false;
+      btnPlay.textContent = '▶';
+    } else if (audio.src && !audio.src.endsWith('audio/') && audio.paused) {
+      audio.play().catch(() => {});
+      isPlaying = true;
+      btnPlay.textContent = '⏸';
+    } else {
+      // Simulated
+      isPlaying = !isPlaying;
+      btnPlay.textContent = isPlaying ? '⏸' : '▶';
+    }
   });
 
-  document.getElementById('btnPrev').addEventListener('click', () => { const i=songs.findIndex(s=>s.id===currentId); playSong(songs[(i-1+songs.length)%songs.length].id); });
-  document.getElementById('btnNext').addEventListener('click', () => { const i=songs.findIndex(s=>s.id===currentId); playSong(songs[(i+1)%songs.length].id); });
-  volSlider.addEventListener('input', () => { audio.volume = parseFloat(volSlider.value); });
-  document.getElementById('lyricsToggle').addEventListener('click', () => { if(currentId) openLyrics(currentId); });
+  btnPrev.addEventListener('click', () => {
+    const idx = songs.findIndex(s => s.id === currentId);
+    const prev = (idx - 1 + songs.length) % songs.length;
+    playSong(songs[prev].id);
+  });
 
-  /* MODAL */
+  btnNext.addEventListener('click', () => {
+    const idx = songs.findIndex(s => s.id === currentId);
+    const next = (idx + 1) % songs.length;
+    playSong(songs[next].id);
+  });
+
+  volumeSlider.addEventListener('input', () => {
+    audio.volume = parseFloat(volumeSlider.value);
+    document.getElementById('volIcon').textContent =
+      parseFloat(volumeSlider.value) === 0 ? '🔇' : '🔊';
+  });
+
+  lyricsToggle.addEventListener('click', () => {
+    if (currentId) openLyrics(currentId);
+  });
+
+  /* ==========================================================
+     LYRICS MODAL
+  ========================================================== */
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalTitle   = document.getElementById('modalTitle');
+  const modalCat     = document.getElementById('modalCat');
+  const lyricsBlock  = document.getElementById('lyricsBlock');
+  const modalClose   = document.getElementById('modalClose');
+
   function openLyrics(id) {
-    const s = songs.find(x=>x.id===id); if(!s) return;
-    document.getElementById('modalTitle').textContent = s.title;
-    document.getElementById('modalCat').textContent = CAT_LABELS[s.category];
-    document.getElementById('lyricsBlock').textContent = s.lyrics;
-    document.getElementById('modalOverlay').classList.add('open');
+    const song = getSong(id);
+    if (!song) return;
+    modalTitle.textContent = song.title;
+    modalCat.textContent = CATEGORY_LABELS[song.category];
+    lyricsBlock.textContent = song.lyrics;
+    modalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-  function closeLyrics() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
-  document.getElementById('modalClose').addEventListener('click', closeLyrics);
-  document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target===document.getElementById('modalOverlay')) closeLyrics(); });
-  document.addEventListener('keydown', e => { if(e.key==='Escape') closeLyrics(); });
 
-  /* FAQ */
-  document.querySelectorAll('.faq-q').forEach(q => {
-    const activate = () => {
-      const item = q.closest('.faq-item'), open = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
-      if (!open) { item.classList.add('open'); q.setAttribute('aria-expanded','true'); }
-    };
-    q.addEventListener('click', activate);
-    q.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); }});
+  function closeLyrics() {
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeLyrics);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeLyrics();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLyrics();
   });
 
-  /* HAMBURGER */
+  /* ==========================================================
+     FAQ ACCORDION
+  ========================================================== */
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      // Toggle clicked
+      if (!isOpen) {
+        item.classList.add('open');
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Keyboard accessibility
+    q.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        q.click();
+      }
+    });
+  });
+
+  /* ==========================================================
+     HAMBURGER MENU
+  ========================================================== */
   const hamburger = document.getElementById('hamburger');
   const navMobile = document.getElementById('navMobile');
+
   hamburger.addEventListener('click', () => {
     const open = navMobile.classList.toggle('open');
     hamburger.classList.toggle('open', open);
     hamburger.setAttribute('aria-expanded', open);
   });
-  function closeMobileNav() { navMobile.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); }
 
-  /* INIT */
+  function closeMobileNav() {
+    navMobile.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  /* ==========================================================
+     SCROLL REVEAL — animation légère au scroll
+  ========================================================== */
+  function observeReveal() {
+    if (!('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  /* ==========================================================
+     INIT
+  ========================================================== */
   buildCards();
+  observeReveal();
+
 </script>
 </body>
 </html>
