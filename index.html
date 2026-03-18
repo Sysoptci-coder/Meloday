@@ -2100,6 +2100,20 @@ La plus belle de nos vies
      SCROLL REVEAL — IntersectionObserver
   ========================================================== */
   function observeReveal() {
+    // Fallback : rendre visible immédiatement ce qui est déjà dans le viewport
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.classList.add('visible');
+      }
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      // Navigateur sans support → tout afficher
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+      return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -2107,9 +2121,9 @@ La plus belle de nos vies
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
   }
 
   /* ==========================================================
@@ -2117,11 +2131,12 @@ La plus belle de nos vies
   ========================================================== */
   buildCards();
 
-  // Staggered initial page load
-  document.addEventListener('DOMContentLoaded', () => {
-    observeReveal();
-  });
-  // Also run immediately in case DOM is already ready
+  // Sécurité absolue : tout afficher après 800ms si rien n'a déclenché
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }, 800);
+
+  document.addEventListener('DOMContentLoaded', observeReveal);
   observeReveal();
 
 </script>
