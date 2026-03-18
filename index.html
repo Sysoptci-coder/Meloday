@@ -2068,16 +2068,6 @@ La plus belle de nos vies
     }
   });
 
-  // Sync modal progress with real audio
-  audio.addEventListener('timeupdate', () => {
-    if (audio.duration) {
-      const pct = (audio.currentTime / audio.duration) * 100;
-      pmFill.style.width = pct + '%';
-      pmElapsedEl.textContent = formatTime(audio.currentTime);
-      pmDurEl.textContent = formatTime(audio.duration);
-    }
-  });
-
   /* ==========================================================
      BUILD SONG CARDS
   ========================================================== */
@@ -2161,6 +2151,16 @@ La plus belle de nos vies
   const timeDuration = document.getElementById('timeDuration');
   const volumeSlider = document.getElementById('volumeSlider');
   const lyricsToggle = document.getElementById('lyricsToggle');
+
+  // Sync modal progress with real audio
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      pmFill.style.width = pct + '%';
+      pmElapsedEl.textContent = formatTime(audio.currentTime);
+      pmDurEl.textContent = formatTime(audio.duration);
+    }
+  });
 
   let currentId = null;
   let isPlaying = false;
