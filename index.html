@@ -2440,6 +2440,12 @@ La plus belle de nos vies
   buildPlaylist();
   observeReveal();
 
+  // Sécurité : vérification que la playlist est bien construite
+  setTimeout(() => {
+    const pl = document.getElementById('playlistList');
+    if (pl && pl.children.length === 0) buildPlaylist();
+  }, 300);
+
 </script>
 </body>
 </html>
