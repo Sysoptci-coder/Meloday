@@ -1099,6 +1099,33 @@
     .mt-8 { margin-top: 32px; }
     .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+    /* ============================================================
+       MOBILE CENTRAGE
+    ============================================================ */
+    @media (max-width: 768px) {
+      /* Hero */
+      .hero .container { text-align: center; }
+      .hero-badge { margin-left: auto; margin-right: auto; }
+      .hero-title { margin-left: auto; margin-right: auto; }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-btns { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-stat-num, .hero-stat-label { display: block; }
+
+      /* Intro */
+      .intro-points { justify-content: center; }
+      .intro-point { flex-direction: column; text-align: center; align-items: center; }
+
+      /* Section tags */
+      .section-tag { display: block; text-align: center; }
+
+      /* Guarantees */
+      .guarantees h2 { text-align: center; }
+
+      /* CTA */
+      .cta-final .container { text-align: center; }
+    }
+
     /* Scrollbar styling */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
